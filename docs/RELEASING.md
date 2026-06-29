@@ -5,6 +5,19 @@ CheapBite ships to the Chrome Web Store via the
 promoting `dev` → `prod`: **pushing to `prod`** packages `extension/`, publishes
 the version in `extension/manifest.json`, and cuts a matching GitHub Release.
 
+## Branches
+
+- **`dev`** — default branch; day-to-day work.
+- **`prod`** — production; pushing here deploys to the Chrome Web Store.
+
+Both are protected (strict): changes require a **pull request** with the
+**"Lint & deterministic tests"** CI check passing; force-pushes and deletions
+are blocked; and the rules are **enforced for admins** too (no direct pushes,
+even for the owner). No review approval is required, so you can self-merge.
+
+> Need to bypass in a pinch? Loosen the rule in **Settings → Branches** (e.g.
+> temporarily uncheck "Include administrators"). Re-enable it afterward.
+
 ## Cutting a release
 
 The version in `extension/manifest.json` is what gets published, and it must be
