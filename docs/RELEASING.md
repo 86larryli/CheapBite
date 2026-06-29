@@ -1,23 +1,23 @@
 # Releasing CheapBite
 
 CheapBite ships to the Chrome Web Store via the
-[`Release` workflow](../.github/workflows/release.yml). Pushing a `v*` tag
-packages `extension/` and publishes it; a GitHub Release is created too.
+[`Release` workflow](../.github/workflows/release.yml). Releases are deployed by
+promoting `dev` → `prod`: **pushing to `prod`** packages `extension/`, publishes
+the version in `extension/manifest.json`, and cuts a matching GitHub Release.
 
 ## Cutting a release
 
-1. Update [`CHANGELOG.md`](../CHANGELOG.md) (move items out of _Unreleased_).
-2. Bump the version in **both** `extension/manifest.json` and `package.json`
-   (they must match; the store only cares about the manifest). Each store upload
-   must be a **strictly higher** version than the last published one.
-3. Commit, then tag and push — the tag must equal the manifest version:
-   ```bash
-   git commit -am "Release v0.1.0"
-   git tag v0.1.0
-   git push origin dev --tags
-   ```
-4. The workflow verifies tag ↔ manifest, zips the extension, uploads + publishes
-   to the Chrome Web Store, and creates the GitHub Release.
+The version in `extension/manifest.json` is what gets published, and it must be
+**strictly higher** than the last published version.
+
+1. On `dev`, bump the version in **both** `extension/manifest.json` and
+   `package.json` (keep them in sync — the store reads the manifest) and update
+   [`CHANGELOG.md`](../CHANGELOG.md).
+2. Commit and push to `dev`; let CI pass.
+3. Promote to `prod` — open a PR `dev` → `prod` and merge it (or fast-forward
+   `prod` to `dev`). That push to `prod` triggers the **Release** workflow, which
+   zips the extension, publishes it to the Chrome Web Store, and creates a GitHub
+   Release tagged `v<version>`.
 
 **Dry run:** trigger the workflow manually (Actions → Release → _Run workflow_)
 with **publish = false** to upload a draft to the dashboard without submitting

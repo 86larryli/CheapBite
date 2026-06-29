@@ -1,15 +1,15 @@
 name: Release
 
-# Publishes to the Chrome Web Store and creates a GitHub Release.
-# Trigger by pushing a version tag that matches the manifest version:
-#   (bump extension/manifest.json + package.json, commit, then)
-#   git tag v0.1.0 && git push origin v0.1.0
-# Or run manually (workflow_dispatch) with publish=false to upload a draft.
+# Continuous deployment to the Chrome Web Store.
+# Pushing to the `prod` branch publishes whatever version is in
+# extension/manifest.json and cuts a matching GitHub Release (tag v<version>).
+# Release flow: bump the version on `dev`, then promote `dev` -> `prod`.
+# Run manually (workflow_dispatch) with publish=false to upload a draft only.
 # One-time secrets + setup are documented in docs/RELEASING.md.
 
 on:
   push:
-    tags: ["v*"]
+    branches: [prod]
   workflow_dispatch:
     inputs:
       publish:
@@ -18,10 +18,10 @@ on:
         default: true
 
 permissions:
-  contents: write # to create the GitHub Release
+  contents: write # to create the GitHub Release / tag
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release
   cancel-in-progress: false
 
 jobs:
@@ -37,42 +37,40 @@ jobs:
         with:
           node-version: lts/*
 
-      # On a tag build, the manifest version MUST equal the tag (minus the "v").
-      - name: Verify manifest version matches tag
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: |
-          TAG="${GITHUB_REF_NAME#v}"
-          MANIFEST="$(node -p "require('./extension/manifest.json').version")"
-          echo "tag=$TAG  manifest=$MANIFEST"
-          if [ "$TAG" != "$MANIFEST" ]; then
-            echo "::error::Tag v$TAG does not match extension/manifest.json version $MANIFEST"
-            exit 1
-          fi
+      - name: Read version from manifest
+        id: ver
+        run: echo "version=$(node -p "require('./extension/manifest.json').version")" >> "$GITHUB_OUTPUT"
 
       # Zip the CONTENTS of extension/ (manifest.json at the zip root).
       # node_modules/, test/, docs/ live at the repo root, not under extension/,
-      # so they are excluded automatically; the -x guards cover stray files.
+      # so they're excluded automatically; the -x guards cover stray files.
       - name: Package extension
         run: |
           mkdir -p dist
-          ( cd extension && zip -r -X "../dist/cheapbite-${GITHUB_REF_NAME}.zip" . \
-              -x '.DS_Store' '*/.DS_Store' )
-          echo "Zip contents:"; unzip -l "dist/cheapbite-${GITHUB_REF_NAME}.zip"
+          ZIP="dist/cheapbite-v${{ steps.ver.outputs.version }}.zip"
+          ( cd extension && zip -r -X "../$ZIP" . -x '.DS_Store' '*/.DS_Store' )
+          echo "Zip contents:"; unzip -l "$ZIP"
 
       - name: Upload & publish to Chrome Web Store
         uses: mnao305/chrome-extension-upload@v6
         with:
-          file-path: dist/cheapbite-${{ github.ref_name }}.zip
+          file-path: dist/cheapbite-v${{ steps.ver.outputs.version }}.zip
           extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
           client-id: ${{ secrets.CHROME_CLIENT_ID }}
           client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
           refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-          # Always publish on a tag; on manual runs honor the publish toggle.
+          # On a prod push, always publish; on manual runs, honor the toggle.
           publish: ${{ github.event_name != 'workflow_dispatch' || inputs.publish }}
 
+      # On prod pushes, tag the commit and cut a GitHub Release. (A non-bumped
+      # version fails the store upload above, so this step only runs for a new
+      # version.) GITHUB_TOKEN-created tags don't re-trigger workflows.
       - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/cheapbite-${{ github.ref_name }}.zip
+          tag_name: v${{ steps.ver.outputs.version }}
+          name: v${{ steps.ver.outputs.version }}
+          target_commitish: ${{ github.sha }}
+          files: dist/cheapbite-v${{ steps.ver.outputs.version }}.zip
           generate_release_notes: true
