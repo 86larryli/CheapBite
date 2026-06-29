@@ -1,0 +1,41 @@
+name: New channel / adapter request
+description: Ask for support for an ordering platform CheapBite can't read yet
+labels: ["adapter"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        CheapBite reads each ordering platform via an **adapter**. Use this to
+        request a new one (or report that a platform shows "not compared yet").
+  - type: input
+    id: platform
+    attributes:
+      label: Platform name
+      description: e.g. Slice, Square Online, Olo, ChowNow…
+    validations:
+      required: true
+  - type: input
+    id: host
+    attributes:
+      label: Ordering domain
+      description: The host of the menu page, e.g. order.example.com.
+  - type: input
+    id: example
+    attributes:
+      label: Example restaurant URL
+      description: A live menu page on that platform we can test against.
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Channel type
+      options:
+        - "Direct (the restaurant's own site)"
+        - "Delivery aggregator (marketplace)"
+        - "Not sure"
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Anything you know — bilingual menus, member/coupon pricing, login wall, etc.

@@ -1,0 +1,105 @@
+/* CheapBite Phase 0 — button + discovery overlay. Scoped to our own IDs. */
+
+#cheapbite-compare-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2147483646;
+  padding: 12px 18px;
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font: 600 14px/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+#cheapbite-compare-btn:hover { background: #15803d; }
+#cheapbite-compare-btn:disabled { opacity: 0.7; cursor: default; }
+
+#cheapbite-overlay {
+  position: fixed;
+  right: 20px;
+  bottom: 76px;
+  z-index: 2147483647;
+  width: 320px;
+  max-height: 60vh;
+  overflow: auto;
+  background: #fff;
+  color: #111827;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  padding: 12px 14px;
+}
+#cheapbite-overlay .cheapbite-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+#cheapbite-overlay .cheapbite-close {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0 4px;
+}
+#cheapbite-overlay .cheapbite-sub {
+  color: #6b7280;
+  font-size: 12px;
+  margin-bottom: 10px;
+  line-height: 1.4; /* full sentences here — wrap, don't truncate */
+}
+#cheapbite-overlay .cheapbite-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  border-top: 1px solid #f1f1f1;
+}
+#cheapbite-overlay .cheapbite-row-name { font-weight: 600; }
+#cheapbite-overlay .cheapbite-row-host {
+  color: #6b7280;
+  font-size: 12px;
+  text-align: right;
+  word-break: break-all;
+}
+#cheapbite-overlay .cheapbite-baseline { color: #16a34a; }
+#cheapbite-overlay .cheapbite-pct {
+  font-weight: 700;
+  font-size: 13px;
+  text-align: right;
+  white-space: nowrap;
+}
+#cheapbite-overlay .cheapbite-evidence {
+  color: #6b7280;
+  font-size: 12px;
+  padding: 0 0 6px;
+}
+#cheapbite-overlay .cheapbite-flag {
+  color: #b45309;
+  font-size: 12px;
+  padding: 7px 0 0;
+  border-top: 1px solid #f1f1f1;
+}
+#cheapbite-overlay .cheapbite-fee {
+  color: #b45309;
+  font-size: 12px;
+  padding: 0 0 6px;
+}
+#cheapbite-overlay .cheapbite-start {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font: 600 14px/1 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  cursor: pointer;
+}
+#cheapbite-overlay .cheapbite-start:hover { background: #15803d; }

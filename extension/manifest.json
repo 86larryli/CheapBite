@@ -1,0 +1,63 @@
+{
+  "manifest_version": 3,
+  "name": "CheapBite",
+  "version": "0.1.0",
+  "description": "Find the cheapest place to order your pickup, from Google Maps.",
+  "homepage_url": "https://github.com/86larryli/CheapBite",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "CheapBite — open a restaurant on Google Maps to compare pickup prices"
+  },
+  "permissions": ["storage", "scripting"],
+  "host_permissions": [
+    "https://www.google.com/maps/*",
+    "https://*.google.com/maps/*",
+    "https://www.google.com/searchviewer/*",
+    "https://www.clover.com/*",
+    "https://*.cloveronline.com/*",
+    "https://www.doordash.com/*",
+    "https://*.doordash.com/*",
+    "https://*.trycaviar.com/*",
+    "https://order.online/*",
+    "https://*.ubereats.com/*",
+    "https://www.ubereats.com/*",
+    "https://*.postmates.com/*",
+    "https://*.grubhub.com/*",
+    "https://www.grubhub.com/*",
+    "https://*.seamless.com/*",
+    "https://*.toasttab.com/*",
+    "https://order.toasttab.com/*",
+    "https://www.toasttab.com/*",
+    "https://*.chowbus.com/*",
+    "https://pos.chowbus.com/*",
+    "https://www.fantuanorder.com/*",
+    "https://*.fantuanorder.com/*",
+    "https://*.hungrypanda.co/*",
+    "https://order.mealkeyway.com/*",
+    "https://*.mealkeyway.com/*",
+    "https://www.beyondmenu.com/*",
+    "https://*.beyondmenu.com/*",
+    "https://*.chownow.com/*",
+    "https://*.dine.online/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.google.com/maps/*",
+        "https://*.google.com/maps/*",
+        "https://www.google.com/searchviewer/*"
+      ],
+      "js": ["discovery.js", "families.js", "compare.js", "content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

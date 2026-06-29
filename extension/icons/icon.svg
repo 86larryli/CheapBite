@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- CheapBite placeholder mark: a price tag on the brand green.
+       Geometry-only (no fonts) so it rasterizes identically anywhere.
+       Swap this SVG and run `npm run icons` to rebrand. -->
+  <rect width="128" height="128" rx="28" fill="#16a34a"/>
+  <g transform="rotate(-18 64 64)">
+    <path d="M64 28 L94 54 L94 92 Q94 102 84 102 L44 102 Q34 102 34 92 L34 54 Z" fill="#ffffff"/>
+    <circle cx="64" cy="48" r="7" fill="#16a34a"/>
+  </g>
+</svg>
