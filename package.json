@@ -37,7 +37,7 @@
     "package": "rm -rf dist && mkdir -p dist && cd extension && zip -r -X ../dist/cheapbite.zip . -x '.DS_Store' '*/.DS_Store'"
   },
   "devDependencies": {
-    "@eslint/js": "^9.0.0",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.61.1",
     "eslint": "^9.0.0",
     "globals": "^15.0.0"
