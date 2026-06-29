@@ -1,0 +1,6 @@
+# Normalize line endings to LF across platforms.
+* text=auto eol=lf
+
+# Captured HTML test fixtures are generated artifacts, not hand-written source —
+# keep them out of GitHub's language statistics and collapse them in diffs.
+test/fixtures/** linguist-generated=true

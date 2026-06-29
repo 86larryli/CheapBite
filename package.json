@@ -1,0 +1,45 @@
+{
+  "name": "cheapbite",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Chrome extension that finds the cheapest place to order pickup from a Google Maps listing — surfacing the restaurant's own \"Direct\" ordering site over the delivery aggregators.",
+  "license": "MIT",
+  "author": "Larry Li <86larryli@gmail.com>",
+  "homepage": "https://github.com/86larryli/CheapBite#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/86larryli/CheapBite.git"
+  },
+  "bugs": {
+    "url": "https://github.com/86larryli/CheapBite/issues"
+  },
+  "keywords": [
+    "chrome-extension",
+    "manifest-v3",
+    "food-delivery",
+    "pickup",
+    "price-comparison",
+    "google-maps",
+    "doordash",
+    "ubereats",
+    "grubhub"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:unit": "playwright test discovery",
+    "test:e2e": "playwright test e2e",
+    "test:ci": "playwright test --grep-invert \"live:\"",
+    "lint": "eslint .",
+    "icons": "node tools/generate-icons.js",
+    "package": "rm -rf dist && mkdir -p dist && cd extension && zip -r -X ../dist/cheapbite.zip . -x '.DS_Store' '*/.DS_Store'"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.61.1",
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0"
+  }
+}
